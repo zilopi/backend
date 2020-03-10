@@ -1,0 +1,9 @@
+{
+    "require": {
+        "aws/aws-sdk-php": "^3.133",
+        "donatello-za/rake-php-plus": "^1.0"
+        
+        
+    }
+    
+}
