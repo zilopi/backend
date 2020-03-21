@@ -37,12 +37,17 @@ $locationFocus = $_POST['LocationFocus'];
 $typeOfData = $_POST['TypeOfData'];
 $File = $_FILES['DataFile'];
 $Mime = $_FILES['DataFile']['type'];
+$Extension = 'no-ext';
+if (isset($_POST['Extension'])){
+$Extension = $_POST['Extension'];
+}
 
 //Convert into small case
 
 
 // $Mime = "Mime";
 $titleKeywords = RakePlus::create($itemTitle)->get();
+$industryKeywords = RakePlus::create($itemIndustry)->get();
 
 //Convert the keywords to lowercase
 for($var = 0 ; $var < sizeof($titleKeywords) ; $var++){
@@ -55,8 +60,11 @@ for($var = 0 ; $var < sizeof($descriptionKeywords) ; $var++){
     $descriptionKeywords[$var] = strtolower($descriptionKeywords[$var]);
 }
 
+for($var = 0 ; $var<sizeof($industryKeywords) ; $var++){
+    $industryKeywords[$var] = strtolower($industryKeywords[$var]);
+}
 //create an array of all keywords
-$allKeywords = array_merge($titleKeywords,$descriptionKeywords);
+$allKeywords = array_merge($titleKeywords,$descriptionKeywords,$industryKeywords);
 
 
 $keywordString = join(":",$allKeywords);
@@ -77,7 +85,7 @@ $result = $s3->putObject(array(
 // var_dump($generateUniqueHash);
 // Insert into the partner-uploads table
 
-$partnerUploadTable = "INSERT INTO `partner-uploads` (`id`,`partner_id`,`uuid`,`information_type`,`mime`,`downloads`,`url`)VALUES(NULL,'$id','$generatedUUID','$typeOfData','$Mime','0','$generateUniqueHash')";
+$partnerUploadTable = "INSERT INTO `partner-uploads` (`id`,`partner_id`,`uuid`,`information_type`,`mime`,`downloads`,`url`,`extension`)VALUES(NULL,'$id','$generatedUUID','$typeOfData','$Mime','0','$generateUniqueHash','$Extension')";
 mysqli_query($conn,$partnerUploadTable) or die("error uploading to partner uploads table");
 
 $getItemIndexInUploadTable = mysqli_insert_id($conn);

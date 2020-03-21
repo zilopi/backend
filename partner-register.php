@@ -28,8 +28,9 @@ isset($_POST['aboutMe'])
      //transform to lowercase
      $email = strtolower($email);
 
-     $select = "SELECT * FROM `partner-account` WHERE email = \"$email\"";
+     $select = "SELECT * FROM `partner-account` WHERE email = \"$email\" OR phone = $phone";
      $getRow = mysqli_query($conn,$select);
+    //  var_dump(mysqli_num_rows($getRow));
      if(mysqli_num_rows($getRow)>0){
         // header("Access-Control-Allow-Origin: *");
         echo json_encode(['status'=>'exist']);

@@ -22,15 +22,15 @@ if(
     //Convert to lower
         $email = strtolower($email);
 
-        $select = "SELECT * FROM `client-account` WHERE email = \"$email\"";
+        $select = "SELECT * FROM `client-account` WHERE email = \"$email\" OR phone_number = $phone";
         $getRow = mysqli_query($conn,$select);
         if(mysqli_num_rows($getRow)>0){
             // header("Access-Control-Allow-Origin: *");
             echo json_encode(['status'=>'exist']);
          }else{
 
-            $query = "INSERT INTO `client-account` (`id`, `first_name`, `last_name`,`email` ,`password`, `phone_number`, `country`, `industry`,  `about_me`)
-            VALUES (NULL, '$FName', '$LName','$email' ,'$password', '$phone', '$country', '$industry',   '$aboutMe');";
+            $query = "INSERT INTO `client-account` (`id`, `first_name`, `last_name`,`email` ,`password`, `phone_number`, `country`, `industry`,  `about_me`,`wallet_balance`)
+            VALUES (NULL, '$FName', '$LName','$email' ,'$password', '$phone', '$country', '$industry',   '$aboutMe',100);";
 
             $insert = mysqli_query($conn,$query) or die("Failed Query");
 
